@@ -1,0 +1,27 @@
+{
+  "title": "FabTwin synthetic chamber",
+  "uid": "fabtwin-synthetic",
+  "description": "Panel vocabulary for the in-process twin. This dashboard was not imported into Grafana. fabtwin_applied is false on the simulation path.",
+  "panels": [
+    {
+      "id": 1,
+      "title": "fabtwin_temperature_residual_c",
+      "type": "timeseries",
+      "targets": [{ "refId": "A", "expr": "fabtwin_temperature_residual_c" }]
+    },
+    {
+      "id": 2,
+      "title": "fabtwin_pressure_residual_kpa",
+      "type": "timeseries",
+      "targets": [{ "refId": "A", "expr": "fabtwin_pressure_residual_kpa" }]
+    },
+    {
+      "id": 3,
+      "title": "fabtwin_applied",
+      "type": "stat",
+      "targets": [{ "refId": "A", "expr": "fabtwin_applied" }]
+    }
+  ],
+  "schemaVersion": 39,
+  "version": 1
+}

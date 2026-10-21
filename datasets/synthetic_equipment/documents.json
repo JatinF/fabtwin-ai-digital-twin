@@ -1,0 +1,40 @@
+{
+  "real_equipment": 0,
+  "documents": [
+    {
+      "id": "SYN-DOC-COOLING",
+      "tenant": "tenant-a",
+      "fault_class": "cooling_flow_low",
+      "title": "Coolant note",
+      "text": "Abnormal chamber temperature with a low coolant-flow signature on SYN-TOOL-01."
+    },
+    {
+      "id": "SYN-DOC-PRESSURE",
+      "tenant": "tenant-a",
+      "fault_class": "pressure_leak",
+      "title": "Pressure note",
+      "text": "Vacuum pressure drop indicates a chamber leak on the pressure sensor path."
+    },
+    {
+      "id": "SYN-DOC-DRIFT",
+      "tenant": "tenant-a",
+      "fault_class": "sensor_drift",
+      "title": "Drift note",
+      "text": "Temperature readings climb while the twin stays flat. Treat the climb as sensor drift."
+    },
+    {
+      "id": "SYN-DOC-NORMAL",
+      "tenant": "tenant-a",
+      "fault_class": "normal",
+      "title": "Window note",
+      "text": "The chamber is within the operating window for this synthetic recipe."
+    },
+    {
+      "id": "SYN-DOC-OTHER",
+      "tenant": "tenant-b",
+      "fault_class": "cooling_flow_low",
+      "title": "Other tenant note",
+      "text": "Abnormal chamber temperature on SYN-TOOL-99. A missing tenant filter would leak this note."
+    }
+  ]
+}

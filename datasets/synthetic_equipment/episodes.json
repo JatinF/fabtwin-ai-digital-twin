@@ -1,0 +1,72 @@
+{
+  "real_equipment": 0,
+  "live_control": false,
+  "episodes": [
+    {
+      "episode_id": "SYN-EP-001",
+      "tenant": "tenant-a",
+      "suite": "qualification",
+      "tool_id": "SYN-TOOL-01",
+      "chamber_id": "SYN-CHAMBER-A",
+      "fault": "cooling_flow_low",
+      "command_flow": 0.55,
+      "image_id": "SYN-IMG-COOLING",
+      "question": "Why is the tool showing abnormal chamber temperature?"
+    },
+    {
+      "episode_id": "SYN-EP-002",
+      "tenant": "tenant-a",
+      "suite": "qualification",
+      "tool_id": "SYN-TOOL-01",
+      "chamber_id": "SYN-CHAMBER-A",
+      "fault": "pressure_leak",
+      "command_flow": 0.55,
+      "image_id": "SYN-IMG-PRESSURE",
+      "question": "Why did the chamber show a vacuum pressure drop?"
+    },
+    {
+      "episode_id": "SYN-EP-003",
+      "tenant": "tenant-a",
+      "suite": "qualification",
+      "tool_id": "SYN-TOOL-01",
+      "chamber_id": "SYN-CHAMBER-A",
+      "fault": "sensor_drift",
+      "command_flow": 0.55,
+      "image_id": "SYN-IMG-DRIFT",
+      "question": "Why do temperature readings climb while the twin stays flat?"
+    },
+    {
+      "episode_id": "SYN-EP-004",
+      "tenant": "tenant-a",
+      "suite": "qualification",
+      "tool_id": "SYN-TOOL-01",
+      "chamber_id": "SYN-CHAMBER-A",
+      "fault": "normal",
+      "command_flow": 0.55,
+      "image_id": "SYN-IMG-NORMAL",
+      "question": "Is the chamber within the operating window?"
+    },
+    {
+      "episode_id": "SYN-EP-005",
+      "tenant": "tenant-a",
+      "suite": "conflict",
+      "tool_id": "SYN-TOOL-01",
+      "chamber_id": "SYN-CHAMBER-A",
+      "fault": "cooling_flow_low",
+      "command_flow": 0.55,
+      "image_id": "SYN-IMG-NORMAL",
+      "question": "Why is the tool showing abnormal chamber temperature?"
+    },
+    {
+      "episode_id": "SYN-EP-B01",
+      "tenant": "tenant-b",
+      "suite": "isolation",
+      "tool_id": "SYN-TOOL-99",
+      "chamber_id": "SYN-CHAMBER-B",
+      "fault": "cooling_flow_low",
+      "command_flow": 0.55,
+      "image_id": "SYN-IMG-COOLING",
+      "question": "Why is the tool showing abnormal chamber temperature?"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+[project]
+name = "fabtwin-ai-digital-twin"
+version = "0.1.0"
+description = "Open-source digital-twin reference platform combining equipment telemetry, physics-based simulation, numerical optimization, multimodal AI diagnostics, and governed agent workflows using synthetic semiconductor manufacturing scenarios."
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+authors = [{ name = "Jatinder Singh" }]
+dependencies = [
+  "fastapi==0.128.1",
+  "httpx==0.27.2",
+  "pydantic>=2",
+  "numpy",
+  "scipy",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+pythonpath = ["src", "."]

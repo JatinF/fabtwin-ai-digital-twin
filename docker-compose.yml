@@ -1,0 +1,35 @@
+# Not started. Image tags were not pulled on the workstation that produced the benchmark.
+# Profiles keep `docker compose up` from launching these services by itself.
+
+services:
+  api:
+    build: .
+    profiles: ["app"]
+    ports:
+      - "8080:8080"
+    environment:
+      INTELLIFORGE_BASE_URL: ""
+
+  postgres:
+    image: postgres:16
+    profiles: ["telemetry"]
+    environment:
+      POSTGRES_USER: fabtwin
+      POSTGRES_PASSWORD: local-demo-only
+      POSTGRES_DB: fabtwin
+    ports:
+      - "5432:5432"
+
+  kafka:
+    image: apache/kafka:3.9.0
+    profiles: ["telemetry"]
+    ports:
+      - "9092:9092"
+
+  grafana:
+    image: grafana/grafana:11.4.0
+    profiles: ["telemetry"]
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: local-demo-only

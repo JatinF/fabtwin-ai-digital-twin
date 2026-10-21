@@ -1,0 +1,265 @@
+{
+  "deployment_decision": "NO-GO",
+  "real_equipment": 0,
+  "live_control": false,
+  "mode": "simulation-only",
+  "machine": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "Intel64 Family 6 Model 140 Stepping 1, GenuineIntel",
+    "machine": "AMD64",
+    "cpu_count": 8,
+    "python": "3.12.10",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1"
+  },
+  "commands": [
+    "python -m pip install -e \".[dev]\"",
+    "python benchmarks/run_benchmark.py",
+    "python -m pytest"
+  ],
+  "residuals": {
+    "normal": {
+      "label": "normal",
+      "final_temperature_residual_c": 0.0,
+      "final_pressure_residual_kpa": 0.0,
+      "temperature_residual_slope": 0.0,
+      "predicted_final_temperature_c": 70.0,
+      "observed_final_temperature_c": 70.0,
+      "predicted_final_pressure_kpa": 12.0,
+      "observed_final_pressure_kpa": 12.0,
+      "readings_ingested": 5
+    },
+    "cooling_flow_low": {
+      "label": "cooling_flow_low",
+      "final_temperature_residual_c": 148.158359,
+      "final_pressure_residual_kpa": 0.0,
+      "temperature_residual_slope": 0.22659,
+      "predicted_final_temperature_c": 70.0,
+      "observed_final_temperature_c": 218.158359,
+      "predicted_final_pressure_kpa": 12.0,
+      "observed_final_pressure_kpa": 12.0,
+      "readings_ingested": 5
+    },
+    "pressure_leak": {
+      "label": "pressure_leak",
+      "final_temperature_residual_c": 0.0,
+      "final_pressure_residual_kpa": -5.333332,
+      "temperature_residual_slope": 0.0,
+      "predicted_final_temperature_c": 70.0,
+      "observed_final_temperature_c": 70.0,
+      "predicted_final_pressure_kpa": 12.0,
+      "observed_final_pressure_kpa": 6.666668,
+      "readings_ingested": 5
+    },
+    "sensor_drift": {
+      "label": "sensor_drift",
+      "final_temperature_residual_c": 20.0,
+      "final_pressure_residual_kpa": 0.0,
+      "temperature_residual_slope": 0.5,
+      "predicted_final_temperature_c": 70.0,
+      "observed_final_temperature_c": 90.0,
+      "predicted_final_pressure_kpa": 12.0,
+      "observed_final_pressure_kpa": 12.0,
+      "readings_ingested": 5
+    }
+  },
+  "optimizer": {
+    "nominal": {
+      "tool": "scipy.optimize.minimize_scalar",
+      "flow_fraction": 0.549999,
+      "steady_temperature_c": 70.000063,
+      "target_c": 70.0,
+      "applied": false,
+      "restores_target": true,
+      "evidence_class": "MEASURED"
+    },
+    "cooling_flow_low": {
+      "tool": "scipy.optimize.minimize_scalar",
+      "flow_fraction": 0.999995,
+      "steady_temperature_c": 130.000563,
+      "target_c": 70.0,
+      "applied": false,
+      "restores_target": false,
+      "evidence_class": "MEASURED"
+    },
+    "constants_evidence_class": "EXAMPLE",
+    "method": "scipy.optimize.minimize_scalar",
+    "bounds": [
+      0.2,
+      1.0
+    ]
+  },
+  "images": {
+    "SYN-IMG-NORMAL": {
+      "expected_kind": "normal",
+      "label": "normal",
+      "gradient": 0.0,
+      "contrast": 0.0,
+      "mean": 0.0
+    },
+    "SYN-IMG-COOLING": {
+      "expected_kind": "cooling_flow_low",
+      "label": "cooling_flow_low",
+      "gradient": 0.066667,
+      "contrast": 0.5,
+      "mean": 0.5
+    },
+    "SYN-IMG-PRESSURE": {
+      "expected_kind": "pressure_leak",
+      "label": "pressure_leak",
+      "gradient": 0.033333,
+      "contrast": 1.0,
+      "mean": 0.0625
+    },
+    "SYN-IMG-DRIFT": {
+      "expected_kind": "sensor_drift",
+      "label": "sensor_drift",
+      "gradient": 0.0,
+      "contrast": 0.0,
+      "mean": 0.5
+    }
+  },
+  "retrieval": {
+    "SYN-EP-001": {
+      "top_id": "SYN-DOC-COOLING",
+      "top_fault_class": "cooling_flow_low",
+      "overlap": 3
+    },
+    "SYN-EP-002": {
+      "top_id": "SYN-DOC-PRESSURE",
+      "top_fault_class": "pressure_leak",
+      "overlap": 6
+    },
+    "SYN-EP-003": {
+      "top_id": "SYN-DOC-DRIFT",
+      "top_fault_class": "sensor_drift",
+      "overlap": 8
+    },
+    "SYN-EP-004": {
+      "top_id": "SYN-DOC-NORMAL",
+      "top_fault_class": "normal",
+      "overlap": 6
+    },
+    "SYN-EP-005": {
+      "top_id": "SYN-DOC-COOLING",
+      "top_fault_class": "cooling_flow_low",
+      "overlap": 3
+    },
+    "SYN-EP-B01": {
+      "top_id": "SYN-DOC-OTHER",
+      "top_fault_class": "cooling_flow_low",
+      "overlap": 3
+    }
+  },
+  "noise": {
+    "seed": 7,
+    "trials": 30,
+    "sigma_temperature_c": 0.05,
+    "sigma_pressure_kpa": 0.02,
+    "false_positive_count": 0,
+    "evidence_class": "MEASURED"
+  },
+  "qualification": {
+    "episodes": 4,
+    "passed": 4,
+    "pass_rate": 1.0,
+    "gateway_calls": 0,
+    "rows": [
+      {
+        "episode_id": "SYN-EP-001",
+        "passed": true,
+        "fault_class": "cooling_flow_low",
+        "gateway_called": false,
+        "live_control": false
+      },
+      {
+        "episode_id": "SYN-EP-002",
+        "passed": true,
+        "fault_class": "pressure_leak",
+        "gateway_called": false,
+        "live_control": false
+      },
+      {
+        "episode_id": "SYN-EP-003",
+        "passed": true,
+        "fault_class": "sensor_drift",
+        "gateway_called": false,
+        "live_control": false
+      },
+      {
+        "episode_id": "SYN-EP-004",
+        "passed": true,
+        "fault_class": "normal",
+        "gateway_called": false,
+        "live_control": false
+      }
+    ],
+    "evidence_class": "MEASURED"
+  },
+  "conflict": {
+    "episode_id": "SYN-EP-005",
+    "status": "STOPPED",
+    "completion_claimed": false,
+    "fault_class": null,
+    "reason": "physics, image, and manual disagree"
+  },
+  "latency": {
+    "iterations": 40,
+    "episode_id": "SYN-EP-001",
+    "p50_ms": 2.777,
+    "p95_ms": 5.296,
+    "evidence_class": "MEASURED"
+  },
+  "nist": {
+    "doi": "https://doi.org/10.18434/mds2-3838",
+    "accessed": "2026-10-21",
+    "readme_bytes": 13114,
+    "readme_sha256": "d696d68841090b87b6e565c5f6415321ef9e45b0803360640e31cd30530d7b6f",
+    "metrics_zip_bytes": 787689,
+    "metrics_zip_sha256": "a2b89522c6d8d3fae6afefa97dd99932b564d6455beb96ae0c69083622cffa36",
+    "global_dice": [
+      {
+        "path": "CsvCollection-UNet-SEM-sim-eval31-compare-output/evaluated_set6/dice-coef-global.csv",
+        "arithmetic_mean": 0.7888469074374048,
+        "standard_deviation": 0.12499149367925828,
+        "evidence_class": "SPEC",
+        "source": "https://doi.org/10.18434/mds2-3838",
+        "accessed": "2026-10-21",
+        "unet_executed_by_fabtwin": false
+      },
+      {
+        "path": "CsvCollection-UNet-SEM-sim-eval51-compare-output/evaluated_set6/dice-coef-global.csv",
+        "arithmetic_mean": 0.8466672651576093,
+        "standard_deviation": 0.14565108325109172,
+        "evidence_class": "SPEC",
+        "source": "https://doi.org/10.18434/mds2-3838",
+        "accessed": "2026-10-21",
+        "unet_executed_by_fabtwin": false
+      },
+      {
+        "path": "CsvCollection-UNet-SEM-sim-eval71-compare-output/evaluated_set6/dice-coef-global.csv",
+        "arithmetic_mean": 0.8162391854030813,
+        "standard_deviation": 0.19252440423731895,
+        "evidence_class": "SPEC",
+        "source": "https://doi.org/10.18434/mds2-3838",
+        "accessed": "2026-10-21",
+        "unet_executed_by_fabtwin": false
+      }
+    ],
+    "intensity_sets_zip": "not-downloaded",
+    "aimodel_sets_zip": "not-downloaded",
+    "unet_executed_by_fabtwin": false
+  },
+  "gates": {
+    "kafka": "not-run",
+    "postgres": "not-run",
+    "grafana": "not-run",
+    "live-equipment": "not-run",
+    "vision-language-model": "not-run",
+    "unet-inference": "not-run",
+    "intelliforge-gateway-call": "not-run",
+    "gpu": "not-run"
+  },
+  "tokens": 0,
+  "cost": "no price applied"
+}
