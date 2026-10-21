@@ -1,0 +1,58 @@
+{
+  "deployment_decision": "NO-GO",
+  "live_control": false,
+  "real_equipment": 0,
+  "transport": "http://127.0.0.1:8766",
+  "intelliforge_health": {
+    "status": "ok",
+    "real_customer_data": 0,
+    "real_equipment": 0,
+    "mode": "local-mock"
+  },
+  "case_id": "SYN-CASE-001",
+  "model": "numpy-lora-r2-seed7",
+  "machine": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "Intel64 Family 6 Model 140 Stepping 1, GenuineIntel",
+    "cpu_count": 8,
+    "python": "3.12.10"
+  },
+  "episodes": [
+    {
+      "episode_id": "SYN-EP-002",
+      "fault_class": "pressure_leak",
+      "status": "COMPLETED",
+      "setpoint_applied": false,
+      "live_control": false,
+      "uses_upstream_fault": false,
+      "upstream_status": "COMPLETED",
+      "upstream_fault_class": "cooling_flow_low",
+      "upstream_setpoint_applied": false,
+      "gateway_status_code": 200,
+      "assistant_excerpt": "Process SYN-PROC-ETCH-01 fault class is cooling_flow_low. Evidence: SYN-DOC-COOLING. Relationships: SYN-PROC-ETCH-01 USES SYN-TOOL-01, SYN-TOOL-01 HAS_CHAMBER SYN-CHAMBER-A, SYN-CHAMBER-A HAS_SENSOR SYN-SENSOR-TEMP, SYN-CHAMBER-A HAS_SENSOR SYN-SENSOR-PRESSURE, SYN-CHAMBER-A HAS_VALVE SYN-VALVE-C1. Recommended coolant flow fraction is 1.0000. The setpoint was not applied."
+    },
+    {
+      "episode_id": "SYN-EP-001",
+      "fault_class": "cooling_flow_low",
+      "status": "COMPLETED",
+      "setpoint_applied": false,
+      "live_control": false,
+      "uses_upstream_fault": false,
+      "upstream_status": "COMPLETED",
+      "upstream_fault_class": "cooling_flow_low",
+      "upstream_setpoint_applied": false,
+      "gateway_status_code": 200,
+      "assistant_excerpt": "Process SYN-PROC-ETCH-01 fault class is cooling_flow_low. Evidence: SYN-DOC-COOLING. Relationships: SYN-PROC-ETCH-01 USES SYN-TOOL-01, SYN-TOOL-01 HAS_CHAMBER SYN-CHAMBER-A, SYN-CHAMBER-A HAS_SENSOR SYN-SENSOR-TEMP, SYN-CHAMBER-A HAS_SENSOR SYN-SENSOR-PRESSURE, SYN-CHAMBER-A HAS_VALVE SYN-VALVE-C1. Recommended coolant flow fraction is 1.0000. The setpoint was not applied."
+    }
+  ],
+  "gateway_calls": 2,
+  "gates": {
+    "live-equipment": "not-run",
+    "kafka": "not-run",
+    "postgres": "not-run",
+    "grafana": "not-run",
+    "vision-language-model": "not-run",
+    "unet-inference": "not-run",
+    "gpu": "not-run"
+  }
+}

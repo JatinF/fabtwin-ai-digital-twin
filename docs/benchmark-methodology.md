@@ -28,6 +28,10 @@ Forty calls of `diagnose` on `SYN-EP-001` with the engineer fixture. Each sample
 
 `archive_manifest` hashes `datasets/public_nist/README.txt` and `metrics_sets.zip` with SHA-256 and parses every `dice-coef-global.csv` in the zip. Those means are SPEC. `unet_executed_by_fabtwin` is false. The intensity zip and the model zip stay `not-downloaded`.
 
+## IntelliForge call
+
+`benchmarks/run_gateway_workflow.py` starts `uvicorn gateway.app:create_app` from the sibling IntelliForge checkout on `127.0.0.1:8766`, then diagnoses `SYN-EP-002` and `SYN-EP-001` with `INTELLIFORGE_CASE_ID=SYN-CASE-001`. Each prompt names that IntelliForge case. The chamber label remains the FabTwin residual class. The upstream label is stored beside it. `uses_upstream_fault` is false. The qualification report keeps gateway calls at 0 because that script does not set a base URL.
+
 ## What this run does not measure
 
 Gateway call count on the default path is 0. Token count is 0. No USD price is applied. The gates `kafka`, `postgres`, `grafana`, `live-equipment`, `vision-language-model`, `unet-inference`, `intelliforge-gateway-call`, and `gpu` are `not-run`. Deployment decision is `NO-GO`.

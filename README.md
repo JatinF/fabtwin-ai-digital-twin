@@ -98,6 +98,17 @@ The figures below are copied from [benchmarks/results/benchmark_report.md](bench
 
 The NIST global Dice means below are copied from `dice-coef-global.csv`. Evidence class SPEC. FabTwin did not run the U-Net. eval31 mean 0.7888469074374048, eval51 mean 0.8466672651576093, eval71 mean 0.8162391854030813. The metrics zip is 787689 bytes. Its SHA-256 is in the report.
 
+## One call to IntelliForge
+
+The qualification benchmark leaves `INTELLIFORGE_BASE_URL` unset, so its gateway call count stays 0. A separate localhost run starts IntelliForge `gateway.app:create_app` on `127.0.0.1:8766` and diagnoses two episodes with case `SYN-CASE-001`. FabTwin keeps the chamber label. The upstream label is IntelliForge's own case. `uses_upstream_fault` is false, and neither side applies a setpoint.
+
+| Episode | Chamber fault | Upstream fault | HTTP |
+| --- | --- | --- | --- |
+| `SYN-EP-002` | `pressure_leak` | `cooling_flow_low` | 200 |
+| `SYN-EP-001` | `cooling_flow_low` | `cooling_flow_low` | 200 |
+
+The record is [benchmarks/results/gateway_workflow.json](benchmarks/results/gateway_workflow.json). Live equipment, Kafka, PostgreSQL, Grafana, the vision-language model, and the U-Net stay `not-run`. Deployment decision remains NO-GO.
+
 ## Run the tests
 
 Python 3.12 or newer.
@@ -105,11 +116,12 @@ Python 3.12 or newer.
 ```bash
 python -m pip install -e ".[dev]"
 python benchmarks/run_benchmark.py
+python benchmarks/run_gateway_workflow.py
 python -m pytest
 uvicorn fabtwin.api.app:create_app --factory
 ```
 
-`run_benchmark.py` solves the four noiseless faults, runs the 30-trace noise study, scores the qualification episodes, times 40 diagnoses, reads the NIST archive, and rewrites `benchmarks/results/`. Pytest does not open a model socket. The workflow in [`.github/workflows/ci.yml`](.github/workflows/ci.yml) installs the package on Ubuntu 24.04 and runs pytest.
+`run_benchmark.py` solves the four noiseless faults, runs the 30-trace noise study, scores the qualification episodes, times 40 diagnoses, reads the NIST archive, and rewrites `benchmarks/results/`. `run_gateway_workflow.py` expects a sibling checkout `intelliforge-ai-platform` with its virtualenv and `uvicorn`. Pytest does not open a model socket. The workflow in [`.github/workflows/ci.yml`](.github/workflows/ci.yml) installs the package on Ubuntu 24.04 and runs pytest.
 
 Docker Compose profiles `app` and `telemetry` are in the tree. They were not started for the committed measurement. `local-demo-only` is a fixture password. The Kafka image tag was not pulled.
 

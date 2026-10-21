@@ -51,3 +51,26 @@ def test_report_gates_and_fresh_labels():
     assert report["noise"]["false_positive_count"] == fresh_false_positives
     assert report["conflict"]["status"] == "STOPPED"
     assert report["conflict"]["completion_claimed"] is False
+
+
+def test_localhost_gateway_workflow_keeps_the_chamber_fault():
+    payload = json.loads((repo_root() / "benchmarks" / "results" / "gateway_workflow.json").read_text(encoding="utf-8"))
+    assert payload["deployment_decision"] == "NO-GO"
+    assert payload["live_control"] is False
+    assert payload["real_equipment"] == 0
+    assert payload["intelliforge_health"]["real_equipment"] == 0
+    assert payload["case_id"] == "SYN-CASE-001"
+    by_id = {row["episode_id"]: row for row in payload["episodes"]}
+    pressure = by_id["SYN-EP-002"]
+    cooling = by_id["SYN-EP-001"]
+    assert pressure["fault_class"] == "pressure_leak"
+    assert pressure["upstream_fault_class"] == "cooling_flow_low"
+    assert pressure["uses_upstream_fault"] is False
+    assert pressure["setpoint_applied"] is False
+    assert pressure["upstream_setpoint_applied"] is False
+    assert pressure["gateway_status_code"] == 200
+    assert cooling["fault_class"] == "cooling_flow_low"
+    assert cooling["upstream_fault_class"] == "cooling_flow_low"
+    assert cooling["uses_upstream_fault"] is False
+    assert "The setpoint was not applied." in pressure["assistant_excerpt"]
+    assert all(gate == "not-run" for gate in payload["gates"].values())

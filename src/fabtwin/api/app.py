@@ -6,7 +6,7 @@ from fastapi import FastAPI, Header, HTTPException
 from pydantic import BaseModel, ConfigDict
 
 from fabtwin import __version__
-from fabtwin.gateway_client.client import gateway_base_url, gateway_token
+from fabtwin.gateway_client.client import gateway_base_url, gateway_case_id, gateway_token
 from fabtwin.governance.auth import PlatformStore
 from fabtwin.workflow import decide_approval, diagnose, request_change
 
@@ -45,7 +45,14 @@ def create_app() -> FastAPI:
         principal = _bearer(authorization, app.state.store)
         try:
             if body.action == "diagnose":
-                return diagnose(principal, body.episode_id, app.state.store, gateway_base_url(), gateway_token())
+                return diagnose(
+                    principal,
+                    body.episode_id,
+                    app.state.store,
+                    gateway_base_url(),
+                    gateway_token(),
+                    gateway_case_id(),
+                )
             return request_change(
                 principal,
                 body.episode_id,
@@ -53,6 +60,7 @@ def create_app() -> FastAPI:
                 app.state.store,
                 gateway_url=gateway_base_url(),
                 gateway_token=gateway_token(),
+                case_id=gateway_case_id(),
             )
         except PermissionError:
             raise HTTPException(status_code=403, detail="forbidden") from None

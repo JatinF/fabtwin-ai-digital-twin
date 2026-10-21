@@ -89,6 +89,8 @@ The default model id sent on the wire is `numpy-lora-r2-seed7`. The body is `{"m
 
 Unset `INTELLIFORGE_BASE_URL` yields `called: false` and reason `INTELLIFORGE_BASE_URL is unset`.
 
+`INTELLIFORGE_CASE_ID` appends that IntelliForge case id to the prompt. The gateway then runs its own case. FabTwin keeps `uses_upstream_fault` false and does not copy `upstream_fault_class` into the chamber fault. The measured localhost call is `benchmarks/results/gateway_workflow.json`.
+
 ## Adapter slots that were not executed
 
 | Slot | Intended system | Gate |

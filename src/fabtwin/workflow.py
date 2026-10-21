@@ -7,7 +7,7 @@ import time
 from fabtwin.diagnostics.images import classify_image, render
 from fabtwin.diagnostics.manuals import load_documents, load_episodes, retrieve
 from fabtwin.diagnostics.nist_archive import SOURCE
-from fabtwin.gateway_client.client import consult
+from fabtwin.gateway_client.client import consult, gateway_prompt
 from fabtwin.governance.auth import can_decide, can_diagnose, can_request_change
 from fabtwin.simulation.optimize import recommend_flow
 from fabtwin.simulation.plant import TARGET_TEMPERATURE_C, parameters_for
@@ -75,7 +75,14 @@ def _note(advice: dict, label: str) -> str:
     return ""
 
 
-def diagnose(principal: dict, episode_id: str, store=None, gateway_url: str | None = None, gateway_token: str = "") -> dict:
+def diagnose(
+    principal: dict,
+    episode_id: str,
+    store=None,
+    gateway_url: str | None = None,
+    gateway_token: str = "",
+    case_id: str = "",
+) -> dict:
     started = time.perf_counter()
     if not can_diagnose(principal):
         raise PermissionError("role")
@@ -104,10 +111,20 @@ def diagnose(principal: dict, episode_id: str, store=None, gateway_url: str | No
         completion_claimed = False
         reason = "physics, image, and manual disagree"
         fault_class = None
-    gateway = consult(gateway_url or "", gateway_token, episode["question"])
+    gateway = consult(
+        gateway_url or "",
+        gateway_token,
+        gateway_prompt(episode["episode_id"], episode["question"], case_id),
+    )
     answer = _answer(episode, shown, evidence_ids, image_label, advice["flow_fraction"], False)
     if advice["note"]:
         answer = f"{answer} {advice['note']}"
+    if gateway["called"]:
+        answer = (
+            f"{answer} Model gateway status is {gateway['status_code']} "
+            f"and upstream fault class is {gateway['upstream_fault_class']}. "
+            "The chamber fault above is the twin decision."
+        )
     record = {
         "episode_id": episode["episode_id"],
         "tenant": principal["tenant"],
@@ -143,12 +160,13 @@ def request_change(
     now: float | None = None,
     gateway_url: str | None = None,
     gateway_token: str = "",
+    case_id: str = "",
 ) -> dict:
     if action not in {"apply_coolant", "rollback"}:
         raise ValueError("unknown action")
     if not can_request_change(principal):
         raise PermissionError("role")
-    finding = diagnose(principal, episode_id, store, gateway_url, gateway_token)
+    finding = diagnose(principal, episode_id, store, gateway_url, gateway_token, case_id)
     if action == "apply_coolant":
         if not finding["recommendation"]["changes_parameter"]:
             if store.audits:

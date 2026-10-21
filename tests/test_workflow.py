@@ -148,3 +148,50 @@ def test_consult_posts_only_when_a_base_url_is_present(monkeypatch):
     assert diagnosed["fault_class"] == "normal"
     assert diagnosed["gateway"]["called"] is True
     assert diagnosed["gateway"]["status_code"] == 503
+    assert diagnosed["gateway"]["uses_upstream_fault"] is False
+
+
+def test_upstream_case_does_not_replace_the_chamber_fault(monkeypatch):
+    captured = {}
+
+    class Response:
+        status_code = 200
+
+        def json(self):
+            return {
+                "choices": [
+                    {
+                        "message": {
+                            "content": "Process SYN-PROC-ETCH-01 fault class is cooling_flow_low. The setpoint was not applied."
+                        }
+                    }
+                ],
+                "intelliforge": {
+                    "status": "COMPLETED",
+                    "fault_class": "cooling_flow_low",
+                    "setpoint_applied": False,
+                },
+            }
+
+    def fake_post(url, headers=None, json=None, timeout=None):
+        captured["json"] = json
+        return Response()
+
+    monkeypatch.setattr(httpx, "post", fake_post)
+    store, reader, _, _, _ = _people()
+    result = diagnose(
+        reader,
+        "SYN-EP-002",
+        store,
+        gateway_url="http://gateway.invalid",
+        gateway_token="dev-engineer-a",
+        case_id="SYN-CASE-001",
+    )
+    assert result["fault_class"] == "pressure_leak"
+    assert result["setpoint_applied"] is False
+    assert result["gateway"]["upstream_fault_class"] == "cooling_flow_low"
+    assert result["gateway"]["upstream_setpoint_applied"] is False
+    assert result["gateway"]["uses_upstream_fault"] is False
+    assert "SYN-CASE-001" in captured["json"]["messages"][0]["content"]
+    assert "The chamber fault above is the twin decision." in result["answer"]
+    assert "The setpoint was not applied." in result["answer"]

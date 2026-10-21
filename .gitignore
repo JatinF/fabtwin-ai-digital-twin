@@ -7,3 +7,4 @@ venv/
 *.egg-info/
 .coverage
 htmlcov/
+benchmarks/results/gateway_workflow_server.log
